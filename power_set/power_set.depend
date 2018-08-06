@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1477211649 source:c:\users\alan-\desktop\nueva carpeta\power_set\main.cpp
+	<iostream>
+	<vector>
+	<string>
+

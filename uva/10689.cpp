@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long int lli;
+typedef vector< vector<lli> > matriz;
+
+matriz multiplicar(matriz & A, matriz & B, lli mod){
+	int n = A.size();
+	matriz C(n, vector<lli>(n, 0));
+	for(int i = 0; i < n; i++){
+		for(int j = 0; j < n; j++){
+			for(int k = 0; k < n; k++){
+				C[i][j] = (C[i][j] + (A[i][k] * B[k][j]) % mod) % mod;
+			}
+		}
+	}
+	return C;
+}
+
+matriz exp_bin_mod(matriz A, lli b, lli mod){
+	int n = A.size();
+	matriz ans(n, vector<lli>(n, 0));
+	for(int i = 0; i < n; i++){
+		ans[i][i] = 1;
+	}
+	while(b){
+		if(b & 1) ans = multiplicar(ans, A, mod);
+		b >>= 1;
+		A = multiplicar(A, A, mod);
+	}
+	return ans;
+}
+
+int main(){
+	ios_base::sync_with_stdio(0);
+	lli a, b, n, m;
+	int t;
+	cin >> t;
+	while(t--){
+		cin >> a >> b >> n >> m;
+		lli mod = 1;
+		for(lli i = 1; i <= m; i++){
+			mod *= 10;
+		}
+		matriz F(2, vector<lli>(2, 1));
+		F[1][1] = 0;
+		F = exp_bin_mod(F, n, mod);
+		cout << (F[1][0] * b + F[1][1] * a) % mod << "\n";
+	}
+	return 0;
+}

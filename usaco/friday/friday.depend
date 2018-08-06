@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1418520576 source:c:\users\alan enrique\documents\usaco\friday\main.cpp
+	<iostream>
+	<fstream>
+
