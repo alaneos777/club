@@ -18,22 +18,24 @@ inline int nodeSize(Treap* T){
 }
 
 inline lli nodeSum(Treap* T){
-	return T ? T->sum + T->add * T->size : 0;
-}
-
-inline void update(Treap* T){
-	if(T){
-		T->size = 1 + nodeSize(T->left) + nodeSize(T->right);
-		T->sum = T->value + nodeSum(T->left) + nodeSum(T->right);
-	}
+	return T ? T->sum : 0;
 }
 
 inline void push(Treap* T){
 	if(T && T->add){
 		T->value += T->add;
+		T->sum += T->add * nodeSize(T);
 		if(T->left) T->left->add += T->add;
 		if(T->right) T->right->add += T->add;
 		T->add = 0;
+	}
+}
+
+inline void update(Treap* T){
+	if(T){
+		T->size = 1 + nodeSize(T->left) + nodeSize(T->right);
+		push(T->left), push(T->right);
+		T->sum = T->value + nodeSum(T->left) + nodeSum(T->right);
 	}
 }
 
