@@ -34,59 +34,25 @@ struct StPer{
 	}
 };
 
-vector<vector<pair<int, int>>> generalSieve(int n){
-	vector<vector<pair<int, int>>> f(n+1);
-	vector<int> cnt(n+1), acum(n+1), primes;
-	vector<bool> isPrime(n+1, true);
-	for(int i = 2; i <= n; ++i){
-		if(isPrime[i]){ //case base: f(p)
-			primes.push_back(i);
-			f[i].push_back({i, 1});
-			cnt[i] = 1;
-			acum[i] = i;
-		}
-		for(int p : primes){
-			int d = i * p;
-			if(d > n) break;
-			isPrime[d] = false;
-			if(i % p == 0){ //gcd(i, p) != 1
-				f[d] = f[i / acum[i]];
-				f[d].push_back({p, cnt[i] + 1});
-				cnt[d] = cnt[i] + 1;
-				acum[d] = acum[i] * p;
-				break;
-			}else{ //gcd(i, p) = 1
-				f[d] = f[i];
-				f[d].push_back({p, 1});
-				cnt[d] = 1;
-				acum[d] = p;
-			}
-		}
-	}
-	return f;
-}
-
-const int M = 1e6;
-
 int main(){
 	ios_base::sync_with_stdio(0), cin.tie(0), cout.tie(0);
-	auto f = generalSieve(M + 1);
-	int n, ai, q, l, r, x, y;
-	cin >> n;
+	int n, m, q, ai, l, r, a, b, last = 0;
+	cin >> n >> m >> q;
 	vector<StPer<int>*> versions(n + 1);
-	versions[0] = new StPer<int>(0, M);
+	versions[0] = new StPer<int>(0, m);
 	for(int i = 1; i <= n; ++i){
 		cin >> ai;
-		StPer<int>* curr = versions[i - 1];
-		for(auto & par : f[ai]){
-			curr = curr->update(par.first, par.second);
-		}
-		versions[i] = curr;
+		versions[i] = versions[i - 1]->update(ai, 1);
 	}
-	cin >> q;
 	while(q--){
-		cin >> l >> r >> x >> y;
-		cout << versions[r]->sum_query(x, y) - versions[l - 1]->sum_query(x, y) << "\n";
+		cin >> l >> r >> a >> b;
+		l = (l + last) % n + 1;
+		r = (r + last) % n + 1;
+		a = (a + last) % m + 1;
+		b = (b + last) % m + 1;
+		if(l > r) swap(l, r);
+		if(a > b) swap(a, b);
+		cout << (last = versions[r]->sum_query(a, b) - versions[l - 1]->sum_query(a, b)) << "\n";
 	}
 	return 0;
 }
