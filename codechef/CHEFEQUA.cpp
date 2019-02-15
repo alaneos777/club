@@ -95,9 +95,9 @@ vector<int> quotient(vector<int> A, vector<int> B){
 	if(n < m) return vector<int>{0};
 	reverse(A.begin(), A.end());
 	reverse(B.begin(), B.end());
-	B.resize(n-m+1);
+	A.resize(n-m+1), B.resize(n-m+1);
 	A = conv(A, inversePolynomial(B));
-	A.erase(A.begin() + n-m+1, A.end());
+	A.resize(n-m+1);
 	reverse(A.begin(), A.end());
 	return A;
 }
