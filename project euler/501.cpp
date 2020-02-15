@@ -52,17 +52,35 @@ lli SumPrimePi(lli i){
 	else return hi[N/i];
 }
 
+lli solve4(lli n, int idx){
+	lli ans = 0;
+	for(int i = idx; i < primes.size(); ++i){
+		lli p = primes[i];
+		lli tmp = SumPrimePi(n/p) - SumPrimePi(p);
+		if(tmp <= 0) break;
+		ans += tmp;
+	}
+	return ans;
+}
+
 int main(){
 	ios_base::sync_with_stdio(0), cin.tie(0), cout.tie(0);
 	cin >> N;
-	pre(N);
 	V = sqrt(N);
-	int l = (int)floor(cbrtl(N));
+	pre(N);
+	int l = (int)floor(powl(N, 1.0l / 7.0l));
 	lli ans = SumPrimePi(l);
-	l = (int)floor(sqrtl(N));
-	for(int p : primes){
-		if(p > l) break;
-		ans += SumPrimePi(N/p) - SumPrimePi(p);
+	for(lli p : primes){
+		lli tmp = SumPrimePi(N/(p*p*p));
+		if(p <= N/(p*p*p)) tmp--;
+		if(tmp <= 0) break;
+		ans += tmp;
+	}
+	for(int i = 0; i < primes.size(); ++i){
+		lli p = primes[i];
+		lli tmp = solve4(N/p, i+1);
+		if(tmp <= 0) break;
+		ans += tmp;
 	}
 	cout << ans << "\n";
 	return 0;

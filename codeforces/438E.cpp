@@ -54,42 +54,34 @@ void ntt(vector<int> & X, int inv){
 	}
 }
 
-void convolution(vector<int> & A, vector<int> & B){
-	int degree = A.size() + B.size() - 2;
-	int size = nearestPowerOfTwo(degree + 1);
-	A.resize(size);
-	B.resize(size);
-	ntt(A, 1);
-	ntt(B, 1);
-	for(int i = 0; i < size; i++){
+vector<int> convolution(vector<int> A, vector<int> B){
+	int sz = A.size() + B.size() - 1;
+	int size = nearestPowerOfTwo(sz);
+	A.resize(size), B.resize(size);
+	ntt(A, 1), ntt(B, 1);
+	for(int i = 0; i < size; i++)
 		A[i] = (lli)A[i] * B[i] % p;
-	}
 	ntt(A, -1);
-	A.resize(degree + 1);
+	A.resize(sz);
+	return A;
 }
 
-vector<int> inversePolynomial(vector<int> & A){
+vector<int> inversePolynomial(const vector<int> & A){
 	vector<int> R(1, inverse(A[0], p));
 	while(R.size() < A.size()){
-		int c = 2 * R.size();
+		size_t c = 2 * R.size();
 		R.resize(c);
-		vector<int> TR = R;
-		TR.resize(nearestPowerOfTwo(2 * c));
-		vector<int> TF(TR.size());
-		for(int i = 0; i < c && i < A.size(); ++i){
-			TF[i] = A[i];
-		}
-		ntt(TR, 1);
-		ntt(TF, 1);
-		for(int i = 0; i < TR.size(); ++i){
-			TR[i] = (lli)TR[i] * TR[i] % p * TF[i] % p;
-		}
-		ntt(TR, -1);
-		TR.resize(2 * c);
+		vector<int> R2 = R;
+		vector<int> a(min(c, A.size()));
+		for(int i = 0; i < a.size(); ++i)
+			a[i] = A[i];
+		R2 = convolution(R2, R2);
+		R2.resize(c);
+		R2 = convolution(R2, a);
 		for(int i = 0; i < c; ++i){
-			R[i] = R[i] + R[i] - TR[i];
-			while(R[i] < 0) R[i] += p;
-			while(R[i] >= p) R[i] -= p;
+			R[i] = R[i] + R[i] - R2[i];
+			if(R[i] < 0) R[i] += p;
+			if(R[i] >= p) R[i] -= p;
 		}
 	}
 	R.resize(A.size());
@@ -98,20 +90,18 @@ vector<int> inversePolynomial(vector<int> & A){
 
 const int inv2 = inverse(2, p);
 
-vector<int> sqrtPolynomial(vector<int> & A){
-	int r0 = 1; //r0^2 = A[0] mod p
+vector<int> sqrtPolynomial(const vector<int> & A){
+	int r0 = 1;
 	vector<int> R(1, r0);
 	while(R.size() < A.size()){
-		int c = 2 * R.size();
+		size_t c = 2 * R.size();
 		R.resize(c);
-		vector<int> TF(c);
-		for(int i = 0; i < c && i < A.size(); ++i){
-			TF[i] = A[i];
-		}
-		vector<int> IR = inversePolynomial(R);
-		convolution(TF, IR);
+		vector<int> a(min(c, A.size()));
+		for(int i = 0; i < a.size(); ++i)
+			a[i] = A[i];
+		a = convolution(a, inversePolynomial(R));
 		for(int i = 0; i < c; ++i){
-			R[i] = R[i] + TF[i];
+			R[i] = R[i] + a[i];
 			if(R[i] >= p) R[i] -= p;
 			R[i] = (lli)R[i] * inv2 % p;
 		}

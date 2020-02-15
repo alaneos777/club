@@ -61,7 +61,7 @@ int sq[MX+1], cb[MX+1], sx[MX+1];
 int Usmall[MX + 1];
 lli Ubig_key[mx][4];
 int Ubig_value[mx][4];
-int8_t Ubig_sz[mx];
+uint8_t Ubig_sz[mx];
 
 int functionU(lli n){
 	if(n <= threshold) return Usmall[n];
@@ -70,16 +70,15 @@ int functionU(lli n){
 		if(Ubig_key[key][i] == n) return Ubig_value[key][i];
 	}
 	lli m = sqrt(n);
-	int ans = 1;
+	lli ans = 1;
 	for(int k = 2, l = n/m; k <= l; ++k){
 		ans -= (lli)functionU(n / k) * sq[k] % mod;
-		if(ans < 0) ans += mod;
 	}
 	for(int k = 1; k < m; ++k){
 		ans -= (P2(n / k) - P2(n / (k + 1))) * Usmall[k] % mod;
-		if(ans >= mod) ans -= mod;
-		if(ans < 0) ans += mod;
 	}
+	ans %= mod;
+	if(ans < 0) ans += mod;
 	Ubig_key[key][Ubig_sz[key]] = n;
 	Ubig_value[key][Ubig_sz[key]] = ans;
 	Ubig_sz[key]++;
@@ -89,7 +88,7 @@ int functionU(lli n){
 int Vsmall[MX + 1];
 lli Vbig_key[mx][4];
 int Vbig_value[mx][4];
-int8_t Vbig_sz[mx];
+uint8_t Vbig_sz[mx];
 
 int functionV(lli n){
 	if(n <= threshold) return Vsmall[n];
@@ -98,15 +97,16 @@ int functionV(lli n){
 		if(Vbig_key[key][i] == n) return Vbig_value[key][i];
 	}
 	lli m = sqrt(n);
-	int ans = 0;
-	for(lli k = 1; k <= m; ++k){
+	lli ans = 0;
+	int k = 1;
+	for(lli d = 1, e = 1; k <= m; ++k, e += 2, d += e){
 		if(Mu[k] == 1)
-			ans += sx[k] * P3(n / (k * k)) % mod;
+			ans += sx[k] * P3(n / d) % mod;
 		else if(Mu[k] == -1)
-			ans -= sx[k] * P3(n / (k * k)) % mod;
-		if(ans >= mod) ans -= mod;
-		if(ans < 0) ans += mod;
+			ans -= sx[k] * P3(n / d) % mod;
 	}
+	ans %= mod;
+	if(ans < 0) ans += mod;
 	Vbig_key[key][Vbig_sz[key]] = n;
 	Vbig_value[key][Vbig_sz[key]] = ans;
 	Vbig_sz[key]++;
@@ -116,7 +116,7 @@ int functionV(lli n){
 int Hsmall[MX + 1];
 lli Hbig_key[mx][4];
 int Hbig_value[mx][4];
-int8_t Hbig_sz[mx];
+uint8_t Hbig_sz[mx];
 
 int functionH(lli n){
 	if(n == 0) return 0;
@@ -132,12 +132,12 @@ int functionH(lli n){
 	lli ans = 0;
 	for(lli k = 1, l = n/m; k <= l; ++k){
 		if(Mu[k]) ans += (lli)cb[k] * functionU(n / k) % mod;
-		if(ans >= mod) ans -= mod;
 	}
 	for(lli k = 1; k < m; ++k){
 		ans += (lli)(functionV(n / k) - functionV(n / (k + 1)) + mod) * Usmall[k] % mod;
-		if(ans >= mod) ans -= mod;
 	}
+	ans %= mod;
+	if(ans < 0) ans += mod;
 	if(n <= threshold){
 		Hsmall[n] = ans;
 	}else{
@@ -186,9 +186,10 @@ int main(){
 			ni = n / i, mi = m / i;
 			u = n / ni < m / mi ? n / ni : m / mi;
 			ans += (functionH(u) - functionH(i-1) + mod) * P(ni) % mod * P(mi) % mod;
-			if(ans >= mod) ans -= mod;
 			i = u + 1;
 		}
+		ans %= mod;
+		if(ans < 0) ans += mod;
 		printf("%lld\n", ans);
 	}
 	return 0;

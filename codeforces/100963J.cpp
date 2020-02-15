@@ -28,30 +28,16 @@ int main(){
 	ios_base::sync_with_stdio(0), cin.tie(0), cout.tie(0);
 	lli n, m, a, k;
 	while(cin >> n >> m >> a >> k && !(n == 0 && m == 0 && a == 0 && k == 0)){
-		lli s0, t0, d, c = a + k - n;
-		d = solve(m, -a, s0, t0);
-		if(c % d == 0){
-			lli q = c / d;
-			lli x, y;
-			if(a == 0 && m == 0){
-				x = s0 * q;
-				y = t0 * q;
-			}else if(a == 0 && m > 0){
-				x = s0 * q;
-				y = t0 * q - m * piso(t0 * q, m);
-			}else if(a > 0 && m == 0){
-				x = s0 * q - a * piso(s0 * q, a);
-				y = t0 * q;
-			}else{
-				lli k = min(piso(t0 * q, m), piso(s0 * q, a));
-				x = s0 * q - a * k;
-				y = t0 * q - m * k;
-			}
-			if(x >= 0 && y >= 0){
-				cout << n + m * x << "\n";
-			}else{
-				cout << "Impossible\n";
-			}
+		lli x0, y0;
+		lli d = solve(m, -a, x0, y0);
+		if((k - n) % d == 0){
+			lli q = (k - n) / d;
+			lli t = min(piso(x0*(k-n), a), piso(y0*(k-n)-d, m));
+			lli x = x0*q - (a/d)*t;
+			lli y = y0*q - (m/d)*t;
+			lli ans = n + m*x;
+			assert(ans == k + a*y);
+			cout << ans << "\n";
 		}else{
 			cout << "Impossible\n";
 		}

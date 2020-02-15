@@ -61,21 +61,26 @@ lli powerMod(lli a, lli b, lli m){
 	return ans;
 }
 
+mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
+lli aleatorio(lli a, lli b){
+	std::uniform_int_distribution<lli> dist(a, b);
+	return dist(rng);
+}
+
 bool isPrimeMillerRabin(lli n){
 	if(n < 2) return false;
-	if(n == 2) return true;
-	lli d = n - 1, s = 0;
+	if(!(n & 1)) return n == 2;
+	lli d = n - 1; int k, s = 0;
 	for(; !(d & 1); d >>= 1, ++s);
-	for(int i = 0; i < 16; ++i){
-		lli a = 1 + rand() % (n - 1);
+	for(int a : {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}){
+		if(n == a) return true;
 		lli m = powerMod(a, d, n);
-		if(m == 1 || m == n - 1) goto exit;
-		for(int k = 0; k < s; ++k){
-			m = multMod(m, m, n);
-			if(m == n - 1) goto exit;
+		if(m == 1 || m == n - 1) continue;
+		for(k = 0; k < s; ++k){
+			m = m * m % n;
+			if(m == n - 1) break;
 		}
-		return false;
-		exit:;
+		if(k == s) return false;
 	}
 	return true;
 }
