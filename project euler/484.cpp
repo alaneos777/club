@@ -40,25 +40,20 @@ inline lli G(lli n){ //sum g(i, 1) , 1 <= i <= n
 	return n;
 }
 
-lli f(lli n, lli acum, int idx){
-	lli ans = G(n) * acum;
+lli f(lli n, int idx = 0){
+	lli ans = G(n);
 	for(int i = idx; i < primes.size(); ++i){
 		lli p = primes[i];
 		lli curr = n / (p * p);
 		if(!curr) break;
 		int e = 1;
 		while(curr >= 1){
-			lli acum2 = acum * (g(p, e + 1) - g(p, 1) * g(p, e));
-			ans += f(curr, acum2, i+1);
+			ans += (g(p, e + 1) - g(p, 1) * g(p, e)) * f(curr, i+1);
 			curr /= p;
 			++e;
 		}
 	}
 	return ans;
-}
-
-lli f(lli n){
-	return f(n, 1, 0);
 }
 
 int main(){

@@ -1,89 +1,102 @@
 #include <bits/stdc++.h>
 using namespace std;
-const double eps = 1e-9;
+using ld = long double;
+
+const ld eps = 1e-9;
+bool geq(ld a, ld b){return a-b >= -eps;}     //a >= b
+bool leq(ld a, ld b){return b-a >= -eps;}     //a <= b
+bool ge(ld a, ld b){return a-b > eps;}        //a > b
+bool le(ld a, ld b){return b-a > eps;}        //a < b
+bool eq(ld a, ld b){return abs(a-b) <= eps;}  //a == b
+bool neq(ld a, ld b){return abs(a-b) > eps;}  //a != b
 
 struct point{
-	double x, y, r;
+	ld x, y, r;
+	int id;
 	point(): x(0), y(0){}
-	point(double x, double y): x(x), y(y){}
+	point(ld x, ld y): x(x), y(y){}
 
 	point operator+(const point & p) const{return point(x + p.x, y + p.y);}
-
 	point operator-(const point & p) const{return point(x - p.x, y - p.y);}
+	point operator*(const ld & k) const{return point(x * k, y * k);}
+	point operator/(const ld & k) const{return point(x / k, y / k);}
 
-	point operator*(const double & k) const{return point(x * k, y * k);}
-
-	point operator/(const double & k) const{return point(x / k, y / k);}
-
-	double length() const{
-		return hypot(x, y);
+	ld length() const{
+		return sqrtl(x*x + y*y);
 	}
-	double cross(const point & p) const{
+	ld norm() const{
+		return x*x + y*y;
+	}
+	ld dot(const point & p) const{
+		return x * p.x + y * p.y;
+	}
+	ld cross(const point & p) const{
 		return x * p.y - y * p.x;
 	}
-
-	point normalize() const{
-		return (*this) / length();
-	}
-
-	point perpendicular() const{
+	point perp() const{
 		return point(-y, x);
 	}
-	point rotate(const double angle) const{
-		return point(x * cos(angle) - y * sin(angle), x * sin(angle) + y * cos(angle));
-	}
-
-	bool operator<(const point & p) const{
-		return x-r < p.x-p.r;
-	}
+	bool operator==(const point & p) const{return eq(x, p.x) && eq(y, p.y);}
+	bool operator<(const point & p) const{return le(x, p.x) || (eq(x, p.x) && le(y, p.y));}
 };
 
-istream &operator>>(istream &is, point & P){
-	point p;
-    is >> p.x >> p.y;
-    P = p;
-    return is;
-}
-
-vector<point> convexHull(vector<point> & P){
+vector<point> convexHull(vector<point> P){
 	sort(P.begin(), P.end());
-	vector<point> pos, neg;
-	for(point & p : P){
-		
+	P.erase(unique(P.begin(), P.end()), P.end());
+	vector<point> L, U;
+	for(int i = 0; i < P.size(); i++){
+		while(L.size() >= 2 && leq((L[L.size() - 2] - P[i]).cross(L[L.size() - 1] - P[i]), 0)){
+			L.pop_back();
+		}
+		L.push_back(P[i]);
 	}
+	for(int i = P.size() - 1; i >= 0; i--){
+		while(U.size() >= 2 && leq((U[U.size() - 2] - P[i]).cross(U[U.size() - 1] - P[i]), 0)){
+			U.pop_back();
+		}
+		U.push_back(P[i]);
+	}
+	L.pop_back();
+	U.pop_back();
+	L.insert(L.end(), U.begin(), U.end());
+	return L;
 }
 
-pair<point, point> pointsOfTangency(const point & p, const point & c, double r){
-	//point p (outside the circle), center c, radius r
-	point v = (p - c).normalize() * r;
-	double theta = acos(r / (p - c).length());
-	return {c + v.rotate(-theta), c + v.rotate(theta)};
-}
-
-int circleInsideCircle(const point & c1, double r1, const point & c2, double r2){
-	//test if circle 2 is inside circle 1
-	//returns "-1" if 2 touches internally 1, "1" if 2 is inside 1, "0" if they overlap
-	double l = r1 - r2 - (c1 - c2).length();
-	return (l > eps ? 1 : (abs(l) < eps ? -1 : 0));
-}
-
-vector<vector<point>> commonExteriorTangents(const point & c1, double r1, const point & c2, double r2){
-	//returns a vector of segments or a single point
-	if(r1 < r2) return commonExteriorTangents(c2, r2, c1, r1);
-	if(c1 == c2 && abs(r1-r2) < 0) return {};
-	int in = circleInsideCircle(c1, r1, c2, r2);
-	if(in == 1) return {};
-	else if(in == -1) return {{c1 + (c2 - c1).normalize() * r1}};
+vector<point> tangents(const point & c1, ld r1, const point & c2, ld r2, bool inner){
+	if(inner) r2 = -r2;
+	point d = c2 - c1;
+	ld dr = r1 - r2, d2 = d.norm(), h2 = d2 - dr*dr;
+	if(eq(d2, 0) || le(h2, 0)) return {};
+	point v = d*dr/d2;
+	if(eq(h2, 0)) return {c1 + v*r1};
 	else{
-		pair<point, point> t;
-		if(abs(r1-r2) < eps)
-			t = {c1 - (c2 - c1).perpendicular(), c1 + (c2 - c1).perpendicular()};
-		else
-			t = pointsOfTangency(c2, c1, r1 - r2);
-		t.first = (t.first - c1).normalize();
-		t.second = (t.second - c1).normalize();
-		return {{c1 + t.first * r1, c2 + t.first * r2}, {c1 + t.second * r1, c2 + t.second * r2}};
+		point u = d.perp()*sqrt(h2)/d2;
+		point a = c1 + (v - u)*r1; a.id = c1.id;
+		point b = c2 + (v - u)*r2; b.id = c2.id;
+		point c = c1 + (v + u)*r1; c.id = c1.id;
+		point d = c2 + (v + u)*r2; d.id = c2.id;
+		return {a, b, c, d};
 	}
+}
+
+istream &operator>>(istream &is, point & P){
+	return is >> P.x >> P.y;
+}
+
+int sgn(ld x){
+	if(ge(x, 0)) return 1;
+	if(le(x, 0)) return -1;
+	return 0;
+}
+
+const ld pi = acosl(-1);
+
+ld angle(const point & a, const point & b){
+	ld cosine = a.dot(b) / a.length() / b.length();
+	int o = sgn(a.cross(b));
+	ld ang = acosl(min(1.0l, max(-1.0l, cosine)));
+	if(o == -1) return 2.0l*pi - ang;
+	else return ang;
 }
 
 int main(){
@@ -94,11 +107,33 @@ int main(){
 		cin >> n;
 		vector<point> points(n);
 		for(int i = 0; i < n; ++i){
-			cin >> points[i];
-			cin >> points[i].r;
+			cin >> points[i] >> points[i].r;
+			points[i].id = i;
 		}
-		points = convexHull(points);
-		//
+		if(n == 1){
+			cout << fixed << setprecision(5) << 2.0l*pi*points[0].r << "\n";
+			continue;
+		}
+		vector<point> poly;
+		for(int i = 0; i < n-1; ++i){
+			for(int j = i+1; j < n; ++j){
+				for(const point & p : tangents(points[i], points[i].r, points[j], points[j].r, false)){
+					poly.push_back(p);
+				}
+			}
+		}
+		poly = convexHull(poly);
+		ld ans = 0;
+		for(int i = 0; i < poly.size(); ++i){
+			point a = poly[i];
+			point b = poly[(i+1) % poly.size()];
+			if(a.id == b.id){
+				ans += angle(a - points[a.id], b - points[b.id]) * points[a.id].r;
+			}else{
+				ans += (b - a).length();
+			}
+		}
+		cout << fixed << setprecision(5) << ans << "\n";
 	}
 	return 0;
 }

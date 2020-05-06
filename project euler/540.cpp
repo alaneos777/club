@@ -1,39 +1,55 @@
 #include <bits/stdc++.h>
 using namespace std;
 using lli = long long int;
-using triple = tuple<lli, lli, lli>;
 
-triple A(triple t){
-	lli a, b, c;
-	tie(a, b, c) = t;
-	return {a - 2*b + 2*c, 2*a - b + 2*c, 2*a - 2*b + 3*c};
+const lli N = 3141592653589793ll;
+const int M = sqrt(N) + 100;
+
+auto muSieve(int n){
+	vector<int> mu(n+1, -1);
+	mu[0] = 0, mu[1] = 1;
+	for(int i = 2; i <= n; ++i){
+		if(mu[i]){
+			for(int j = 2*i; j <= n; j += i){
+				mu[j] -= mu[i];
+			}
+		}
+	}
+	return mu;
 }
 
-triple B(triple t){
-	lli a, b, c;
-	tie(a, b, c) = t;
-	return {-a + 2*b + 2*c, -2*a + b + 2*c, -2*a + 2*b + 3*c};
+const auto mu = muSieve(M);
+
+lli f(lli n){
+	lli cnt = 0;
+	lli x = 1;
+	while(1){
+		lli hi = (lli)floor(sqrt(n - x*x));
+		lli lo = x + 1;
+		if(lo > hi) break;
+		cnt += hi-lo+1;
+		x++;
+	}
+	return cnt;
 }
 
-triple C(triple t){
-	lli a, b, c;
-	tie(a, b, c) = t;
-	return {a + 2*b + 2*c, 2*a + b + 2*c, 2*a + 2*b + 3*c};
+lli Q(lli n){
+	lli cnt = 0;
+	for(lli k = 1; k*k <= n; ++k){
+		if(mu[k]) cnt += mu[k] * f(n / (k*k));
+	}
+	return cnt;
 }
 
 int main(){
-	lli N = 1e9;
 	lli ans = 0;
-	triple start = {3, 4, 5};
-	function<void(triple)> gen = [&](triple t){
-		if(get<2>(t) <= N){
-			ans++;
-			gen(A(t));
-			gen(B(t));
-			gen(C(t));
-		}
-	};
-	gen(start);
+	lli two = 1;
+	int alt = 1;
+	while(two <= N){
+		ans += alt * Q(N / two);
+		alt = -alt;
+		two <<= 1;
+	}
 	cout << ans << "\n";
 	return 0;
 }

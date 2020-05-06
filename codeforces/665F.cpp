@@ -24,7 +24,6 @@ lli N, V;
 vector<lli> lo(M), hi(M);
 void pre(lli n){
 	lli v = sqrt(n), p, temp, q, j, end, i, d;
-	vector<bool> used(v+1);
 	for(p = 1; p <= v; p++){
 		lo[p] = p - 1;
 		hi[p] = n/p - 1;

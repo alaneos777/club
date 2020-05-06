@@ -16,11 +16,6 @@ struct segment{
 		if(start != s.start) return start < s.start;
 		return end < s.end;
 	}
-	bool operator>(const segment & s) const{
-		if(axis != s.axis) return axis > s.axis;
-		if(start != s.start) return start > s.start;
-		return end > s.end;
-	}
 };
 
 struct event{
@@ -34,10 +29,6 @@ struct event{
 		if(p == e.p) return t < e.t;
 		return p < e.p;
 	}
-	bool operator>(const event & e) const{
-		if(p == e.p) return t > e.t;
-		return p > e.p;
-	}
 };
 
 typedef tree<segment, null_type, less<segment>, rb_tree_tag, tree_order_statistics_node_update> ordered_set;
@@ -47,15 +38,14 @@ int main(){
 	int n;
 	cin >> n;
 	int xi, yi, xf, yf;
-	vector<segment> segmentsH, segmentsV;
 	vector<event> events;
 	for(int i = 0; i < n; ++i){
 		cin >> xi >> yi >> xf >> yf;
-		if(yi == yf){
+		if(yi == yf){ //segmento horizontal
 			if(xi > xf) swap(xi, xf);
 			events.emplace_back(xi, 'a', segment(xi, xf, yi)); //start
 			events.emplace_back(xf, 'c', segment(xi, xf, yi)); //end
-		}else if(xi == xf){
+		}else if(xi == xf){ //segmento vertical
 			if(yi > yf) swap(yi, yf);
 			events.emplace_back(xi, 'b', segment(yi, yf, xi)); //vertical line
 		}
