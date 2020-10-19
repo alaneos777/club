@@ -83,6 +83,10 @@ istream &operator>>(istream &is, point & P){
 	return is >> P.x >> P.y;
 }
 
+ostream &operator<<(ostream &os, const point & P){
+	return os << "(" << P.x << ", " << P.y << ")";
+}
+
 int sgn(ld x){
 	if(ge(x, 0)) return 1;
 	if(le(x, 0)) return -1;
@@ -128,8 +132,10 @@ int main(){
 			point a = poly[i];
 			point b = poly[(i+1) % poly.size()];
 			if(a.id == b.id){
+				cout << "arc " << a.id << " " << a << " " << b << "\n";
 				ans += angle(a - points[a.id], b - points[b.id]) * points[a.id].r;
 			}else{
+				cout << "line " << a.id << " " << b.id << " " << a << " " << b << "\n";
 				ans += (b - a).length();
 			}
 		}

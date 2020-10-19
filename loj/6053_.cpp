@@ -57,7 +57,7 @@ struct SumPrimePi{
 		}
 	}
 
-	T get(lli i){
+	T get(lli i) const{
 		if(i <= v) return lo[i];
 		else return hi[n/i];
 	}

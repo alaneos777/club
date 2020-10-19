@@ -57,7 +57,7 @@ struct SumPrimePi{
 		}
 	}
 
-	T get(lli i){
+	T get(lli i) const{
 		if(i <= v) return lo[i];
 		else return hi[n/i];
 	}
@@ -74,11 +74,11 @@ struct MultiplicativeSum{
 		lo.resize(v+2), hi.resize(v+2), smallFP.resize(v+2);
 	}
 
-	void add(T coef, const SumPrimePi<T> & pi){
+	void add(T coef, const auto & pi){
 		assert(pi.n == n);
 		for(int i = 1; i <= v; ++i){
-			smallFP[i] += coef * pi.lo[i];
-			hi[i] += coef * (pi.hi[i] - pi.lo[v]);
+			smallFP[i] += coef * pi.get(i);
+			hi[i] += coef * (pi.get(n/i) - pi.get(v));
 		}
 	}
 
@@ -128,7 +128,7 @@ struct MultiplicativeSum{
 		}
 	}
 
-	T get(lli i){
+	T get(lli i) const{
 		if(i <= v) return lo[i];
 		else return hi[n/i];
 	}
