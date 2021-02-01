@@ -72,7 +72,10 @@ inline T g(lli p, int a){
 
 template<typename T>
 T f(const SumPrimePiModulo4<T> & pi, lli n, int idx = 0){
-	T ans = pi.get(n) - pi.get(pi.primes[idx] - 1);
+	// sum of g(p, 1) for primes p such that primes[idx] <= p <= n
+	int lo = idx ? pi.primes[idx-1] : 0;
+	T ans = pi.get(n) - pi.get(lo);
+	if(idx == 0) ans++;
 	for(int i = idx; i < pi.primes.size(); ++i){
 		lli p = pi.primes[i];
 		if(p * p > n) break;
@@ -93,7 +96,6 @@ int main(){
 	cin >> n;
 	SumPrimePiModulo4<lli> pi(n);
 	pi.build();
-	pi.primes.push_back(pi.v + 1);
-	cout << (1 + f<lli>(pi, n) - n) / 2 << "\n";
+	cout << (f<lli>(pi, n) - n) / 2 << "\n";
 	return 0;
 }

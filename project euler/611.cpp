@@ -64,8 +64,11 @@ struct SumPrimePiModulo4{
 };
 
 lli SUM(const SumPrimePiModulo4 & pi, function<lli(lli, int)> g, lli n, int idx = 0){
-	lli ans = (pi.primes[idx] <= 2 && 2 <= n);
-	if(idx == 0) ans++;
+	int lo = idx ? pi.primes[idx-1] : 0;
+	lli ans = (lo < 2 && 2 <= n);
+	if(idx == 0){
+		ans++;
+	}
 	for(int i = idx; i < pi.primes.size(); ++i){
 		lli p = pi.primes[i];
 		if(p * p > n) break;
