@@ -18,19 +18,17 @@ auto sieve(int n){
 }
 
 const lli N = 1e18;
-const auto primes = sieve(sqrt(N) + 100);
+const auto primes = sieve(cbrtl(N) + 100);
 
 lli f(lli n, int idx = 0){
 	lli ans = n;
 	for(int i = idx; i < primes.size(); ++i){
 		lli p = primes[i];
-		lli curr = n / (p * p);
+		lli curr = n / (p * p) / p;
 		if(!curr) break;
-		int e = 1;
 		while(curr >= 1){
-			if(e >= 2) ans += f(curr, i+1);
+			ans += f(curr, i+1);
 			curr /= p;
-			++e;
 		}
 	}
 	return ans;

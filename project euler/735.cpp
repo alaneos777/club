@@ -85,36 +85,21 @@ inline lli g1(lli p, int a){
 	else return power(p, (a+1)/2);
 };
 
-lli GET(const SumPrimePi & pi, lli r, lli N){
+lli GET(const SumPrimePi & pi, lli l, lli r, lli N){
+	if(l > r) return 0;
 	lli ans = 0;
-	lli m = sqrtl(N);
-	for(lli p : pi.primes){
-		if(p > m || p > r) break;
-		ans += N/p;
-	}
-	for(lli p = m+1; p <= N/m && p <= r; ++p){
-		bool is = true;
-		for(lli d = 2; d*d <= p; ++d){
-			if(p % d == 0){
-				is = false;
-				break;
-			}
-		}
-		if(is){
-			ans += N/p;
-		}
-	}
-	for(lli i = 1; i < m; ++i){
-		lli hi = min(r, N/i), lo = min(r, N/(i+1));
-		if(lo > hi) break;
-		ans += (pi.get(hi) - pi.get(lo)) * i;
+	lli i = l;
+	while(i <= r){
+		lli u = N / (N / i);
+		ans += (N/i) * (pi.get(min(u, r)) - pi.get(i - 1));
+		i = u + 1;
 	}
 	return ans;
 }
 
 lli SUM1(const SumPrimePi & pi, lli n, lli N, int idx = 0){
 	int lo = idx ? pi.primes[idx-1] : 0;
-	lli ans = GET(pi, n, N) - GET(pi, lo, N);
+	lli ans = GET(pi, lo+1, n, N);
 	if(lo < 2 && 2 <= n){
 		ans = ans - N/2 + N;
 	}
@@ -139,8 +124,10 @@ const lli N = 1e12;
 auto pi = SumPrimePi(N);
 
 int main(){
+	clock_t start = clock();
 	pi.build();
 	lli ans = N - SUM2(pi, N) + SUM1(pi, N, N);
 	cout << ans << "\n";
+	cout << fixed << setprecision(3) << double(clock() - start) / CLOCKS_PER_SEC << "s" << "\n";
 	return 0;
 }
