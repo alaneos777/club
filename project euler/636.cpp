@@ -73,6 +73,7 @@ poly gen(int a){
 void gen_set_partitions(int n, function<void(const part& pi)> f){
 	queue<part> q;
 	q.push({{0}});
+	if(n == 1) f({{0}});
 	for(int i = 1; i < n; ++i){
 		int sz = q.size();
 		while(sz--){

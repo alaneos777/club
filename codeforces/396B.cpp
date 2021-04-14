@@ -1,22 +1,35 @@
 #include <bits/stdc++.h>
 using namespace std;
+using lli = long long int;
 
-typedef long long int ull;
-
-void criba(ull n, vector<bool> & es_primo){
-	ull limit = sqrt(n);
-	es_primo.resize(n + 1, true);
-	es_primo[0] = es_primo[1] = false;
-	for(ull i = 2; i <= limit; ++i){
-		while(!es_primo[i]) ++i;
-		for(ull j = 2 * i; j <= n; j+=i){
-			es_primo[j] = false;
-		}
+bool isPrime(int n){
+	for(int d = 2; d*d <= n; ++d){
+		if(n % d == 0) return false;
 	}
+	return true;
 }
 
 int main(){
-	vector<bool> es_primo;
-	criba(1e9+7, es_primo);
+	ios_base::sync_with_stdio(0), cin.tie(0), cout.tie(0);
+	int t;
+	cin >> t;
+	while(t--){
+		int n;
+		cin >> n;
+		lli p = n;
+		while(!isPrime(p)){
+			p--;
+		}
+		lli q = n+1;
+		while(!isPrime(q)){
+			q++;
+		}
+		lli num = 2*(n-1) + (p-2)*(q-2);
+		lli den = 2*p*q;
+		lli d = __gcd(num, den);
+		num /= d;
+		den /= d;
+		cout << num << "/" << den << "\n";
+	}
 	return 0;
 }
