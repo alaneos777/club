@@ -1,25 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 using lli = long long int;
-using ull = unsigned long long int;
-
-vector<pair<lli, int>> factorize(lli n){
-	vector<pair<lli, int>> f;
-	for(lli i = 2; i <= sqrt(n); ++i){
-		int pot = 0;
-		while(n % i == 0){
-			n /= i;
-			pot++;
-		}
-		if(pot){
-			f.emplace_back(i, pot);
-		}
-	}
-	if(n > 1){
-		f.emplace_back(n, 1);
-	}
-	return f;
-}
 
 lli techo(lli a, lli b){
 	if((a >= 0 && b > 0) || (a < 0 && b < 0)){
@@ -30,77 +11,28 @@ lli techo(lli a, lli b){
 	}
 }
 
-ull mult(ull a, ull b, ull m){
-	ull ans = 0;
-	while(b){
-		if(b & 1) ans = (ans + a) % m;
-		b >>= 1;
-		a = (a + a) % m;
+tuple<lli, lli, lli> extgcd(lli a, lli b){
+	if(b == 0){
+		if(a > 0) return {a, 1, 0};
+		else return {-a, -1, 0};
+	}else{
+		auto[d, x, y] = extgcd(b, a%b);
+		return {d, y, x - y*(a/b)};
 	}
-	return ans;
 }
 
-lli power(lli a, lli b){
-	lli ans = 1;
-	while(b){
-		if(b & 1) ans = ans * a;
-		b >>= 1;
-		a = a * a;
+pair<lli, lli> crt(const vector<lli>& a, const vector<lli>& m){
+	lli x = a[0], mod = m[0];
+	for(int i = 1; i < a.size(); ++i){
+		auto[d, s, t] = extgcd(mod, -m[i]);
+		if((a[i] - x) % d != 0) return {-1, -1};
+		lli step = m[i] / d;
+		lli k = s * (((a[i] - x) / d) % step) % step;
+		if(k < 0) k += step;
+		x += mod*k;
+		mod *= step;
 	}
-	return ans;
-}
-
-ull inv(lli a, lli m){
-	lli r0 = a, r1 = m, ri, s0 = 1, s1 = 0, si;
-	while(r1){
-		si = s0 - s1 * (r0 / r1), s0 = s1, s1 = si;
-		ri = r0 % r1, r0 = r1, r1 = ri;
-	}
-	if(r0 == -1) s0 *= -1;
-	if(s0 < 0) s0 += m;
-	return s0;
-}
-
-pair<lli, lli> crt(const vector<lli> & a, const vector<lli> & m){
-	map<lli, pair<int, lli>> congruences; //prime, <pot, ai>
-	int n = a.size();
-	for(int i = 0; i < n; ++i){
-		auto f = factorize(m[i]);
-		for(auto & par : f){
-			lli p;
-			int pot;
-			tie(p, pot) = par;
-			if(congruences.find(p) == congruences.end()){
-				congruences[p] = {pot, a[i]};
-			}else{
-				lli oldAi;
-				int oldPot;
-				tie(oldPot, oldAi) = congruences[p];
-				if((oldAi - a[i]) % power(p, min(oldPot, pot)) == 0){
-					if(pot > oldPot){
-						congruences[p] = {pot, a[i]};
-					}
-				}else{
-					return {0, 0}; //error
-				}
-			}
-		}
-	}
-	ull allProd = 1;
-	for(auto & c : congruences){
-		allProd *= (ull)power(c.first, c.second.first);
-	}
-	ull ans = 0;
-	for(auto & c : congruences){
-		lli pi = c.first;
-		int pot;
-		ull ai;
-		tie(pot, ai) = c.second;
-		ull mi = power(pi, pot);
-		ull prod = allProd / mi;
-		ans = (ans + mult(mult(ai % mi, inv(prod, mi), allProd), prod, allProd)) % allProd;
-	}
-	return {ans, allProd};
+	return {x, mod};
 }
 
 int main(){
@@ -162,7 +94,7 @@ int main(){
 			lli ai, mi;
 			tie(mi, ai) = equation;
 			if(mi != 0){
-				a.emplace_back(ai);
+				a.emplace_back(ai % mi);
 				m.emplace_back(mi);
 			}
 			//cout << " t = " << ai << " mod " << mi << "\n";
@@ -171,7 +103,7 @@ int main(){
 		if(a.size() > 0){
 			tie(time, modulo) = crt(a, m);
 		}
-		if(modulo == 0){
+		if(modulo == -1){
 			continue;
 		}
 		bool equal = true;

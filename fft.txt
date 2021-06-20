@@ -1,0 +1,99 @@
+fft
+
+Polynomial Multiplication	https://www.spoj.com/problems/POLYMUL/
+Very Fast Multiplication	https://www.spoj.com/problems/VFMUL/
+Maximum Self-Matching	https://www.spoj.com/problems/MAXMATCH/en/
+Ada and Nucleobase	https://www.spoj.com/problems/ADAMATCH/
+Golf Bot	https://onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=4744
+Emma and sum of products	https://www.hackerrank.com/challenges/emma-and-sum-of-products/problem
+Arithmetic Progressions	https://www.codechef.com/problems/COUNTARI
+Thief in a shop	https://codeforces.com/problemset/problem/632/E
+Yet Another String Matching Problem	https://codeforces.com/problemset/problem/954/I
+Fuzzy search	https://codeforces.com/problemset/problem/528/D
+K-Inversions	https://open.kattis.com/problems/kinversions
+Counting Tuples	https://projecteuler.net/problem=537
+Tile Cutting	https://open.kattis.com/problems/tiles
+Sum of primes	https://www.codechef.com/problems/CLSUMG
+Nikita and Order Statistics	https://codeforces.com/problemset/problem/993/E
+Red-White Fence	https://codeforces.com/problemset/problem/1251/F
+PolandBall and Many Other Balls	https://codeforces.com/problemset/problem/755/G
+Substring Search	https://codeforces.com/contest/1334/problem/G
+Simple nCr https://codeforces.com/gym/280379/problem/A
+Lost Map https://www.acmicpc.net/problem/20340
+Cafebazaar's Chess Tournament https://www.acmicpc.net/problem/18333
+Lazy Reimu https://codeforces.com/group/Ohoz9kAFjS/contest/267784/problem/D
+Another Fibonacci	https://www.codechef.com/problems/MOREFB
+Minions and the rooms https://sharecode.io/sections/problem/problemset/2855
+Rusty String	https://codeforces.com/problemset/problem/827/E
+
+The Child and Binary Tree	http://codeforces.com/contest/438/problem/E
+Series Sum	https://www.codechef.com/problems/SERSUM
+Evaluate the polynomial	https://www.codechef.com/problems/POLYEVAL
+Lucas Theorem	https://www.codechef.com/problems/LUCASTH
+Coprime 6-tuples	https://www.codechef.com/problems/TUPLES
+Cumulative Sum Problem	https://www.spoj.com/problems/OVICUMSUM/
+Ladies Shop	https://codeforces.com/problemset/problem/286/E
+Divisor Set	https://codeforces.com/problemset/problem/1257/G
+Solving the equation	https://codeforces.com/group/jbdVtsXBjp/contest/262445/problem/I
+Tarea aburrida	https://codeforces.com/group/jbdVtsXBjp/contest/262445/problem/J
+Special partitions 2	https://projecteuler.net/problem=614
+
+AmShZ Farm https://codeforces.com/contest/1528/problem/F
+
+http://acm.scu.edu.cn/soj/problem.action?id=4422
+https://www.codechef.com/problems/SUMXOR2
+https://www.codechef.com/problems/XORTREEH
+https://codeforces.com/contest/1218/problem/E
+https://codeforces.com/gym/101821/problem/F
+https://open.kattis.com/problems/binaryvoting
+https://www.spoj.com/problems/JPM2/
+https://www.spoj.com/problems/COUNTDIO/
+https://www.urionlinejudge.com.br/judge/en/problems/view/2669
+Chef and the Combination Lock https://www.codechef.com/problems/CHEFSSM
+https://www.codechef.com/problems/PSUM
+https://www.hackerrank.com/challenges/parity-party/problem
+
+https://codeforces.com/gym/280379/problem/B
+https://www.hackerearth.com/problem/algorithm/perfect-permutations-september-clash/
+https://codeforces.com/gym/102586/problem/C
+https://www.codechef.com/problems/CHEFEQUA
+https://www.codechef.com/problems/RNBWROAD
+https://www.codechef.com/problems/JADUGAR2
+https://atcoder.jp/contests/s8pc-3/tasks/s8pc_3_g
+https://judge.yosupo.jp/problem/partition_function
+https://judge.yosupo.jp/problem/sharp_p_subset_sum
+https://www.codechef.com/problems/STRPOW
+https://www.codechef.com/problems/RNG
+
+https://www.luogu.com.cn/problem/P6800
+https://www.luogu.com.cn/problem/P6828
+
+
+f(n,m) = f(n-1,m) + f(n-1,m-1) + f(n-2,m-1)
+function f(n,m){
+    if(m == 0) return 1;
+    if(n == 0) return m==0 ? 1 : 0;
+    if(n == 1) return m<=1 ? 1 : 0;
+    return f(n-1, m) + f(n-1,m-1) + f(n-2,m-1);
+}
+
+F(0) = 1
+F(1) = 1+x
+
+F_n(x) = f(n,0) + f(n,1)x + f(n,2)x² + f(n,3)x³ + ...
+
+F_n(x) = 1 + [f(n-1,1) + f(n-1,0) + f(n-2,0)]x + [f(n-1,2) + f(n-1,1) + f(n-2,1)]x² + [f(n-1,3) + f(n-1,2) + f(n-2,2)]x³ + ...
+F_n(x) = 1 + [f(n-1,1)x + f(n-1,2)x² + f(n-1,3)x³ + ...] + [f(n-1,0)x + f(n-1,1)x² + f(n-1,2)x³ + ...] + [f(n-2,0)x + f(n-2,1)x² + f(n-2,2)x³ + ...]
+F_n(x) = 1 + [-1 + F_(n-1)(x)] + x*F_(n-1)(x) + x*F_(n-2)(x)
+F_n(x) = (1+x)*F_(n-1)(x) + x*F_(n-2)(x)
+
+z^2 - (1+x)z - x = 0
+z = [1+x +- sqrt(1+6x+x²)] / 2
+
+F_n(x) = C1(x) z1^n + C2(x) z2^n
+
+F_1(x) = C1(x)z1 + C2(x)z2 = 1+x
+F_0(x) = C1(x) + C2(x) = 1
+
+C1(x) = (1+x - z2) / (z1 - z2)
+C2(x) = (z1 - (1+x)) / (z1 - z2)

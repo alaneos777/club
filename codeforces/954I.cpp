@@ -3,6 +3,40 @@ using namespace std;
 using lli = long long int;
 const int mod = 998244353, g = 3;
 
+struct disjointSet{
+	int N;
+	vector<short int> rank;
+	vector<int> parent;
+
+	disjointSet(int N): N(N), parent(N), rank(N){
+		iota(parent.begin(), parent.end(), 0);
+	}
+
+	int findSet(int v){
+		if(v == parent[v]) return v;
+		return parent[v] = findSet(parent[v]);
+	}
+
+	void unionSet(int a, int b){
+		a = findSet(a), b = findSet(b);
+		if(a == b) return;
+		if(rank[a] < rank[b]){
+			parent[a] = b;
+		}else{
+			parent[b] = a;
+			if(rank[a] == rank[b]) ++rank[a];
+		}
+	}
+
+	int size(){
+		set<int> st;
+		for(int i = 0; i < N; ++i){
+			st.insert(parent[i]);
+		}
+		return st.size();
+	}
+};
+
 int nearestPowerOfTwo(int n){
 	int ans = 1;
 	while(ans < n) ans <<= 1;
@@ -62,44 +96,36 @@ vector<int> operator*(vector<int> a, vector<int> b){
 	return c;
 }
 
-int Ceil(int a, int b){
-	if((a >= 0 && b > 0) || (a < 0 && b < 0)){
-		if(a % b == 0) return a / b;
-		else return a / b + 1;
-	}else{
-		return a / b;
-	}
-}
-
 int main(){
 	ios_base::sync_with_stdio(0), cin.tie(0), cout.tie(0);
-	int t;
-	cin >> t;
-	while(t--){
-		int n;
-		string s;
-		cin >> n >> s;
-		vector<int> a(n), b(n);
-		for(int i = 0; i < n; ++i){
-			a[i] = (s[i] == 'V');
-			b[n-1-i] = (s[i] == 'K');
-		}
-		vector<int> c = a*b;
-		c.push_back(0);
-		vector<int> ans;
-		for(int k = 1; k <= n; ++k){
-			bool test = true;
-			for(int j = Ceil(1-n, k); k*j <= n; ++j){
-				test &= (c[n-1+k*j] == 0);
-				if(!test) break;
+	vector<char> alpha = {'a', 'b', 'c', 'd', 'e', 'f'};
+	int r = alpha.size();
+	string s, t;
+	cin >> s >> t;
+	reverse(t.begin(), t.end());
+	int m = s.size(), n = t.size();
+	vector<disjointSet> ds(m-n+1, r);
+	for(int i = 0; i < r; ++i){
+		for(int j = 0; j < r; ++j){
+			if(i == j) continue;
+			vector<int> P(m), Q(n);
+			for(int k = 0; k < m; ++k){
+				P[k] = (s[k] == alpha[i]);
 			}
-			if(test) ans.push_back(k);
+			for(int k = 0; k < n; ++k){
+				Q[k] = (t[k] == alpha[j]);
+			}
+			vector<int> mult = P * Q;
+			for(int k = 0; k <= m-n; ++k){
+				if(mult[k + n-1]){
+					ds[k].unionSet(i, j);
+				}
+			}
 		}
-		cout << ans.size() << "\n";
-		for(int ai : ans){
-			cout << ai << " ";
-		}
-		cout << "\n";
 	}
+	for(int k = 0; k <= m-n; ++k){
+		cout << r - ds[k].size() << " ";
+	}
+	cout << "\n";
 	return 0;
 }

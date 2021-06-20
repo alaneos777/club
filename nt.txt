@@ -1,0 +1,717 @@
+Concepto de números enteros
+Concepto de divisibilidad
+Algoritmo de la división
+
+Números primos
+ Divisores y propiedades (a,b|n y a<=b --> a^2<=n)
+ Tests de primalidad básicos
+Criba de eratóstenes y cribas básicas
+Teorema fundamental de la aritmética
+ Factorización de enteros
+ generar divisores a través de la factorización
+Factores del factorial - fórmula de legendre
+gcd y lcm
+Coprimos
+gcd extendido, bezout
+gcd y lcm a través de la factorización
+ecuaciones diofánticas
+
+exponenciación y multiplicación binaria
+
+coeficiente binomial
+
+aritmética modular
+inverso modular
+ todos los inversos modulo p
+ criterios de divisibilidad
+pequeño teorema de fermat
+congruencias lineales
+teorema chino del residuo
+teorema de wilson
+teorema de lucas
+
+Funciones multiplicativas:
+ phi
+  teorema de la phi de euler
+ mobius
+ numero de divisores
+ suma de divisores
+
+Generalización de cribas
+
+Orden multiplicativo
+Generadores/Raíces primitivas modulares
+Raíces primitivas de la unidad
+Función de Carmichael
+Logaritmo discreto
+Raíz k-esima
+Tonelli Shanks
+Hensel Lemma
+
+Álgebra lineal
+Matrices
+Sistemas de ecuaciones
+Gauss-Jordan
+Recurrencias lineales
+
+Polinomios
+FFT y NTT
+
+
+Temas extras: miller rabbin, pollard rho, big integer, orden multiplicativo, generadores y raices, hensel's lifting lemma
+
+
+https://www.codechef.com/wiki/tutorial-number-theory
+https://medium.com/nybles/number-theory-for-coding-newbies-8e229e8330e2
+
+
+
+=== Divisors, primes and factorization ===
+
+Divisibility of Factors (factors of factorial)
+https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=1425
+
+*How many zero's and how many digits? (factors of factorial, logarithm)
+https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=1002
+
+Factovisors (factors of factorial)
+https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=24&page=show_problem&problem=1080
+
+Factoring Large Numbers (factoring in sqrt time)
+https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=1333
+
+Prime Distance (primes, test)
+https://onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=1081
+
+Mr. Azad and his Son!!!!! (test perfect numbers)
+https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=1431
+
+Perfect P-th Powers (factorization, gcd in prime exponents)
+https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1563
+
+Count the factors (distinct prime factors, lp sieve)
+https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=1640
+
+Again Prime? No Time (largest e such that m^e | n!)
+https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=1721
+
+How Many Solutions? (solve for (x,y) in m/x + n/y = 1/p, divisors of mnp²)
+https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=1899
+
+Composite prime ()
+https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=2027
+
+Alternate Task (sum of divisors sieve)
+https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=2828
+
+Find Solutions (solve for (a,b) in c=ab-(a+b)/2+1 , divisors of 4c-3)
+https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=3156
+
+Divisors (divisors sieve and partial sums)
+https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=3194
+
+Best Friend (factorization, divisors, partial sums)
+https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=3856
+
+Find Terrorists (divisors and primes sieve)
+https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=3687
+
+Prime Substring (prime numbers until 10^5, easy)
+https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=3987
+
+Prime Gap (primes sieve, easy)
+https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=4519
+
+Prime Land (find factorization of x-1, given that of x, easy)
+https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=457
+
+Goldbach's Conjecture (primes sieve, two pointers)
+https://onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=484
+
+Just the Facts (last nonzero digit in n!)
+https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=509
+
+Goldbach's Conjecture (II) (primes sieve, two pointers)
+https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=627
+
+Factorial factors (prime factors of factorial)
+https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=825
+
+Choose and divide (factors of factorial)
+https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=1316
+
+Largest Prime Divisor (greatest prime, few queries, large values)
+https://onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=2461
+
+Give-a-Gnocchi (distinct primes in a*b, queries, lp sieve)
+https://codeforces.com/problemset/gymProblem/102343/E
+
+*Lets Count Factors (distint prime, lp sieve)
+https://codeforces.com/gym/102966/problem/L
+
+Older brother (test if number is prime power)
+https://codeforces.com/gym/101490/problem/I
+
+The neutral zone (sieve with reduced memory)
+https://codeforces.com/contest/1017/problem/F
+
+Divisors of the Divisors of an Integer (factors of factorial)
+https://codeforces.com/gym/102040/problem/C
+
+Forbechenko v Rodvsky (find sqfree part of b/gcd(a,b), requires pollard rho)
+https://codeforces.com/gym/102299/problem/F
+
+Divples (find divisors of a that are multiples of b)
+https://codeforces.com/gym/102302/problem/B
+
+Weird Sanchola (miller rabin)
+https://codeforces.com/gym/102302/problem/J
+
+Weakened Common Divisor (gcd, lcm, least prime in factorization)
+https://codeforces.com/problemset/problem/1025/B
+
+Number Multiplication (graphs, pollard rho)
+https://codeforces.com/gym/102861/problem/N
+
+Square Difference (check if a²-b² is prime)
+https://codeforces.com/problemset/problem/1033/B
+
+Divisors (find number of divisors of product of large integers, hard, casework for tl)
+https://codeforces.com/problemset/problem/1033/D
+
+Divide Candies (find pairs (i,j) such that m | (i²+j²))
+https://codeforces.com/problemset/problem/1056/B
+
+LCM (find number of divisors of b)
+https://codeforces.com/problemset/problem/1068/B
+
+Minimum Integer (floor and ceil inequalities with divisors)
+https://codeforces.com/problemset/problem/1101/A
+
+Trailing Loves (or L'oeufs?) (trailing zeroes in base b of n!)
+https://codeforces.com/problemset/problem/1114/C
+
+Power Products (factor with lp, dfs)
+https://codeforces.com/problemset/problem/1225/D
+
+Lucky Division (divisors, easy)
+https://codeforces.com/problemset/problem/122/A
+
+Boring queries (segment tree, prime factors, hard)
+https://codeforces.com/problemset/problem/1422/F
+
+Reducing fractions (gcd, prime factorization)
+https://codeforces.com/problemset/problem/222/C
+
+T-primes (check if n=p² for some prime p)
+https://codeforces.com/problemset/problem/230/B
+
+Almost Prime (count how many integers of the form pq are between 1 and n, p,q primes, p!=q)
+https://codeforces.com/problemset/problem/26/A
+
+On Sum of Fractions (telescopic sum, primality test brute force)
+https://codeforces.com/problemset/problem/396/B
+
+Multiplication Table (binary search, multiples, divisors)
+https://codeforces.com/problemset/problem/448/D
+
+Friends and presents (binary search, divisors)
+https://codeforces.com/problemset/problem/483/B
+
+Dima and Lisa (express n as a sum of at most 3 primes)
+https://codeforces.com/problemset/problem/584/D
+
+Pythagorean Triples (divisors, cases, pythagorean triples)
+https://codeforces.com/problemset/problem/707/C
+
+Taxes (goldbach conjecture, prime test in O(sqrt(n)))
+https://codeforces.com/problemset/problem/735/D
+
+PolandBall and Hypothesis (sieve until 10^6)
+https://codeforces.com/contest/755/problem/A
+
+SUM and REPLACE (queries, segment tree, divisors, recursion depth)
+https://codeforces.com/problemset/problem/920/F
+
+k-Factorization (naive factorization, easy)
+https://codeforces.com/problemset/problem/797/A
+
+Design Tutorial: Learn from Math (primes sieve, two pointers, easy)
+https://codeforces.com/problemset/problem/472/A
+
+Short Task (divisors sieve, precalculate all answers)
+https://codeforces.com/contest/1512/problem/G
+
+Sum of Different Primes (primes, dp)
+https://icpcarchive.ecs.baylor.edu/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1620
+
+Square-Free Numbers (lp sieve, square-free factorization)
+https://icpcarchive.ecs.baylor.edu/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=3111
+
+Divisors (divisors of super factorial, factorization)
+https://icpcarchive.ecs.baylor.edu/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=6107
+
+Counting Zeroes (queries of trailing zeroes)
+https://www.codechef.com/problems/COUNZ
+
+Chef and Prime Queries (prime factorization, persistent segment tree)
+https://www.codechef.com/problems/PRMQ
+
+Distinct Primes (nth number with at least 3 distinct prime factors)
+https://www.spoj.com/problems/AMR11E/
+
+Not So Flat After All
+https://www.spoj.com/problems/ANARC09C/
+
+Amazing Prime Sequence (sum of lp, sieve)
+https://www.spoj.com/problems/APS/
+
+Number breaking (lp factorization)
+https://www.spoj.com/problems/BREAKING/
+
+Prime Number Theorem (sieve until 10^8)
+https://www.spoj.com/problems/CPRIME/
+
+Cube Free Numbers (sieve with multiples of cubes)
+https://www.spoj.com/problems/CUBEFR/
+
+Divisors of factorial (divisors of n!, n <= 5*10^4)
+https://www.spoj.com/problems/DIVFACT/
+
+Divisors of factorial (medium) (n <= 10^8)
+https://www.spoj.com/problems/DIVFACT2/
+
+Divisors of factorial (hard) (n <= 10^8, more test cases)
+https://www.spoj.com/problems/DIVFACT3/
+
+Divisors of factorial (extreme) (n <= 10^11)
+https://www.spoj.com/problems/DIVFACT4/
+
+Divisor summation (divisors sieve, proper divisors)
+https://www.spoj.com/problems/DIVSUM/
+
+Divisor Summation (hard) (pollard rho or a lot of optimizations)
+https://www.spoj.com/problems/DIVSUM2/
+
+Integer Factorization (15 digits) (factorization in O(sqrt(n)/log(n)) )
+https://www.spoj.com/problems/FACT0/
+
+Integer Factorization (20 digits) (pollard rho)
+https://www.spoj.com/problems/FACT1/
+
+Factorial vs Power (binary search, logarithms)
+https://www.spoj.com/problems/FACVSPOW/
+
+Factorial Modulo (binary search over legendre formula)
+https://www.spoj.com/problems/FCDC/
+
+Just Primes (dp or O(1) observation)
+https://www.spoj.com/problems/JPM/
+
+Kth Power Summation (pollard rho, sum of d^k, d|n, n <= 10^15)
+https://www.spoj.com/problems/KPOWERSUM/
+
+n-divisors (number of numbers with n divisors in range [a,b], find divisors with sieve)
+https://www.spoj.com/problems/NDIV/
+
+Looking for the Risk Factor (greatest prime sieve, wavelet tree or segment tree of ordered sets)
+https://www.urionlinejudge.com.br/judge/es/problems/view/2914
+
+Factorial simplification (factorization of factorial, binary search, greedy)
+https://codeforces.com/gym/101309/problem/F
+
+
+
+=== GCD and related ===
+
+Marbles (extgcd)
+https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1031
+
+Euclid Problem (extgcd)
+https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=1045
+
+Solutions to an Equation (extgcd, number of solutions inside a region)
+https://lightoj.com/problem/solutions-to-an-equation
+
+Crucial Equation (gcd criterion for linear diophantine equation)
+https://www.spoj.com/problems/CEQU/en/
+
+A Symmetrical Pizza
+https://www.urionlinejudge.com.br/judge/es/problems/view/2903
+
+LCM (find last digit in lcm)
+https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1621
+
+Benefit (solve for b in lcm(a, b) = c)
+https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=2989
+
+LCM Cardinality (find numbers of pairs such that lcm(a, b) = n)
+https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1833
+
+GCD LCM ()
+https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=2383
+
+GCD - Extreme (I) (gcd summatory, fits in linear time with repeated factorization or multiplicative sieve)
+https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=2419
+
+GCD - Extreme (II) (gcd summatory, fits in linear time with repeated factorization or multiplicative sieve)
+https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=2421
+
+Maximum GCD (easy, brute force)
+https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=2927
+
+Pi (coprimes in a range, easy, brute force)
+https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=353
+
+Gift dilemma (extgcd in three variables)
+https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=4628
+
+Keypad Problem (extgcd, hard)
+https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=4859
+
+Ebony and Ivory (extgcd, even with brute force)
+https://codeforces.com/problemset/problem/633/A
+
+Once upon a time (linear diophantic equation, extgcd)
+https://codeforces.com/problemset/gymProblem/100963/J
+
+Border (gcd criterion for linear diophantine equation)
+https://codeforces.com/contest/1011/problem/E
+
+Rational Resistance (simulate gcd)
+https://codeforces.com/problemset/problem/343/A
+
+Maximum GCD (greedy, easy)
+https://codeforces.com/contest/1370/problem/A
+
+Counterexample (easy, brute force)
+https://codeforces.com/problemset/problem/483/A
+
+Superfactorial numeral system (gcd, fractions, greedy)
+https://codeforces.com/problemset/gymProblem/100637/J
+
+Indivisibility (lcm, inclusion-exclusion)
+https://codeforces.com/problemset/problem/630/K
+
+The Monster (extgcd, even with brute force)
+https://codeforces.com/problemset/problem/787/A
+
+Fraction (gcd, irreducible fraction, greedy)
+https://codeforces.com/problemset/problem/854/A
+
+Nastya Studies Informatics (gcd, lcm, divisors, dfs)
+https://codeforces.com/problemset/problem/992/B
+
+Weird Subtraction Process (simulate variation of gcd)
+https://codeforces.com/problemset/problem/946/B
+
+Relatively Prime Pairs (gcd of pairs, easy)
+https://codeforces.com/contest/1051/problem/B
+
+Divisor subtraction (smallest prime factor)
+https://codeforces.com/contest/1076/problem/B
+
+Alarm Clocks Everywhere (arithmetic progression, gcd, divisibility)
+https://codeforces.com/contest/1155/problem/C
+
+Round Corridor (lcm, cycles, check same group)
+https://codeforces.com/problemset/problem/1200/C
+
+LCM Rush (divisors, dfs, hard)
+https://atcoder.jp/contests/abc020/tasks/abc020_d?lang=en
+
+Simple Sum (sum of n/gcd(i,n), multiplicative, lp sieve)
+https://www.codechef.com/problems/SMPLSUM
+
+GCD Extreme (multiplicative function with sieve)
+https://www.spoj.com/problems/GCDEX/
+
+LCM Sum (multiplicative function with sieve)
+https://www.spoj.com/problems/LCMSUM/
+
+LCM Sum (Hard) (multiplicative function with pollard rho)
+https://www.spoj.com/problems/LCMSUMH/
+
+NT Games (multiplicative function with sieve)
+https://www.spoj.com/problems/NTG/
+
+
+
+=== Modular arithmetic and binary exponentiation ===
+
+Modular arithmetic
+https://open.kattis.com/problems/modulararithmetic
+
+Modular equations (congruence, divisors of a-b)
+https://codeforces.com/problemset/problem/495/B
+
+You can say 11 (divisibility by 11, easy)
+https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=21&page=show_problem&problem=1870
+
+Fedya and Maths (large number modulo 5)
+https://codeforces.com/problemset/problem/456/B
+
+Leading and Trailing (logarithm and binary exponentation modulo 1000)
+https://onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=1970
+
+The Huge One (divisibility by 2,3,..,12 of a huge integer)
+https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=2319
+
+MODEX (binary exponentiation modulo)
+https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=24&page=show_problem&problem=3671
+
+Rational Numbers from Repeating Fractions (algebra, binary exponentiation)
+https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=268
+
+Ones (multiplicative order, expbin)
+https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=1068
+
+Powers Et Al.
+https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=17&page=show_problem&problem=1456
+
+Multipliers (divisors product, mod)
+https://codeforces.com/problemset/problem/615/D
+
+Sum of Remainders (sqrt sum, cases, modulo)
+https://codeforces.com/problemset/problem/616/E
+
+Remainders game (chinese remainder theorem, lcm, gcd)
+https://codeforces.com/problemset/problem/687/B
+
+Remainder Reminder (chinese remainder theorem)
+https://open.kattis.com/problems/remainderreminder
+
+Chinese Remainder Theorem (non-relatively prime moduli)
+https://open.kattis.com/problems/generalchineseremainder
+
+Vasya and Petya's Game (chinese remainder theorem, powers of a prime)
+https://codeforces.com/problemset/problem/576/A
+
+Ralph And His Magic Field (binary exponentiation)
+https://codeforces.com/problemset/problem/894/B
+
+Congruence equation (period, hard)
+https://codeforces.com/problemset/problem/919/E
+
+Alternating Sum (geometric series)
+https://codeforces.com/problemset/problem/963/A
+
+New Year and the Sphere Transmission (cycles, lcm, divisors, arithmetic progression)
+https://codeforces.com/problemset/problem/1091/C
+
+A^B^C (binary exponentiation, chinese remainder theorem)
+https://atcoder.jp/contests/arc113/tasks/arc113_b?lang=en
+
+Monkey Tradition (chinese remainder theorem, modulos are pairwise distinct primes)
+https://lightoj.com/problem/monkey-tradition
+
+Fantastic Beasts (chinese remainder theorem, graphs, cycles, casework, hard)
+https://www.urionlinejudge.com.br/judge/es/problems/view/2908
+
+Kisses & Hugs (combinatorics, binary exponentiation)
+https://www.codechef.com/problems/CKISSHUG
+
+Just a simple sum (binary exponentiation, geometric sum, groups)
+https://www.codechef.com/problems/H4
+
+Ada and Diary (inverse, equation)
+https://www.spoj.com/problems/ADAHACK/
+
+The last digit (binary exponentiation modulo 10)
+https://www.spoj.com/problems/LASTDIG/
+
+Just Add It (algebra, binary exponentiation)
+https://www.spoj.com/problems/ZSUM/
+
+Sum of Powers (formula, modulo)
+https://www.spoj.com/problems/SUMPOWK1/
+
+Shuttle Search (chinese remainder theorem)
+https://adventofcode.com/2020/day/13
+
+Competitive Programmer (divisibility by 3 and 20)
+https://codeforces.com/problemset/problem/1266/A
+
+Billiard (chinese remainder theorem, geometry)
+https://codeforces.com/contest/982/problem/E
+
+Cheese and Random Toppings (chinese remainder theorem, lucas theorem)
+https://www.hackerrank.com/contests/infinitum10/challenges/cheese-and-random-toppings
+
+
+
+=== Multiplicative functions ===
+
+Euler Totient Function (calculate euler phi)
+https://www.spoj.com/problems/ETF/
+
+Euler Totient Function Depth (euler phi, chains, dp)
+https://www.spoj.com/problems/ETFD/
+
+Irreducable Basic Fractions (euler phi)
+https://onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=1120
+
+Relatives (euler phi)
+https://onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=1240
+
+Enumerating Rational Numbers (euler phi function)
+https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=2302
+
+REQ (phi, primes, queries offline, segment tree, mod)
+https://codeforces.com/problemset/problem/594/D
+
+Riemann vs Mertens (mu sieve)
+https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=1679
+
+Another new function (phi sieve)
+https://onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=1931
+
+N DIV PHI_N (minimum m<=N such that m/phi(m) is max, N <= 10^40, greedy, primes, big integer)
+https://www.spoj.com/problems/NDIVPHI/
+
+Square-free integers (inclusion-exclusion, möbius function)
+https://www.spoj.com/problems/SQFREE/
+
+
+
+
+
+
+
+
+Fermat vs. Pythagoras (finding primitive pythagorean triples)
+https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=3&page=show_problem&problem=42
+
+Fun Theory (discrete logarithm, base and modulo are coprime)
+https://www.codechef.com/problems/AMCS04
+
+Power Modulo Inverted (discrete logarithm, arbitray base and modulo)
+https://www.spoj.com/problems/MOD/
+
+
+PRIMITIVEROOTS (product of all generators modulo p)
+https://www.spoj.com/problems/PROBLEM4/
+
+Primitive Root (test if r is a generator modulo p)
+https://www.spoj.com/problems/PROOT/
+
+
+
+
+Counting paths (combinatorics, factorials)
+https://codeforces.com/gym/101498/problem/D
+
+Accounting Numeral System (combiatorics, greedy, binary search)
+https://codeforces.com/gym/100633/problem/I
+
+Ceizenpok’s formula (nCr modulo m)
+https://codeforces.com/gym/100633/problem/J
+
+Number of Ways (sum of minimum paths on a grid, binomial coefficient, hockey stick identity)
+https://www.codechef.com/problems/NWAYS
+
+X-mouse in the Campus (factorization, multiplicative order)
+https://codeforces.com/problemset/problem/1027/G
+
+Please, another Queries on Array? (segment tree, euler phi function, primes, bitmasks)
+https://codeforces.com/problemset/problem/1114/F
+
+Devu and Flowers (inclusion-exclusion, medium)
+https://codeforces.com/problemset/problem/451/E
+
+The Sum of the K-th powers (lagrange, modulo)
+https://vjudge.net/problem/CodeForces-622F
+
+A Summatory (Extreme) (lagrange, modulo)
+https://www.spoj.com/problems/ASUMEXTR/
+
+ZS and The Birthday Paradox (probabilities)
+https://codeforces.com/problemset/problem/711/E
+
+Team Work (stirling)
+https://codeforces.com/problemset/problem/932/E
+
+Some Sums (partial sums, generating functions, eulerian numbers)
+https://www.spoj.com/problems/SOMESUMS/
+
+
+=== Matrices and Recurrences ===
+
+Graph Coloring (gauss-jordan, rank-nullity)
+https://lightoj.com/problem/graph-coloring
+
+Log Concave Sequences (dp, brute force)
+https://codeforces.com/gym/102302/problem/H
+
+Solving Systems of Linear Equations (gauss jordan with rationals)
+https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=1050
+
+Sum Modulo (markov chains, recurrence, gauss-jordan, expected value)
+https://codeforces.com/gym/102586/problem/C
+
+Stupid Sequence (gauss-jordan, polynomials)
+https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=2294
+
+Stoichiometry (gauss jordan with rationals, lcm, gcd)
+https://open.kattis.com/problems/stoichiometry
+
+Going to school (gauss-jordan, graphs, markov-chain, expected-value)
+https://www.spoj.com/problems/GS/
+
+Basis Change (find alternate recurrence, gauss jordan, hard)
+https://codeforces.com/gym/102129/problem/D
+
+Lunar New Year and a Recursive Sequence (recurrence, discrete logarithm)
+https://codeforces.com/problemset/problem/1106/F
+
+Magic Gems (dp)
+https://vjudge.net/problem/CodeForces-1117D
+
+Construct Array (dp, recurrence)
+https://www.codechef.com/problems/CARR
+
+Product Oriented Recurrence (recurrence, discrete logarithm)
+https://codeforces.com/problemset/problem/1182/E
+
+Jzzhu and Sequences (recurrence, modulo, 6-cycle)
+https://codeforces.com/problemset/problem/450/B
+
+Festival organization (stirling, working with a+b*sqrt(5), hard)
+https://codeforces.com/problemset/problem/717/A
+
+Chefs new Pet (dp, linear recurrence)
+https://www.codechef.com/problems/HAREJUMP
+
+Fibonacci With a Square Root (modified fibonacci)
+https://www.spoj.com/problems/FIBOSQRT/
+
+Fibonacci Sum (recurrence, easy)
+https://www.spoj.com/problems/FIBOSUM/
+
+Fibonacci Power Sum (hard) (recurrence, binomial theorem, algebra, working with a+b*sqrt(5))
+https://www.spoj.com/problems/FIBPSUM2/
+
+Flibonakki (recurrence)
+https://www.spoj.com/problems/FLIB/
+
+Euclids algorithm revisited (calculate fibonacci with recurrence)
+https://www.spoj.com/problems/MAIN74/
+
+Power of Phi (Medium) (fibonacci)
+https://www.spoj.com/problems/POWERPHI/
+
+Recursive Sequence (recurrence)
+https://www.spoj.com/problems/SEQ/
+
+Recursive Sequence (Version II)
+https://www.spoj.com/problems/SPP/
+
+Sum of products (hidden fibonacci)
+https://www.spoj.com/problems/SUMMUL/
+
+Summing Sums (matrix exponentiation, pattern, recurrence)
+https://www.spoj.com/problems/SUMSUMS/
+
+Not Everything is Strike Hard Version (stairs dp recurrence with steps {1,2,3})
+https://www.urionlinejudge.com.br/judge/es/problems/view/2986
+
