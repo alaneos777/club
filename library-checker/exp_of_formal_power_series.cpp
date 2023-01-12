@@ -69,7 +69,6 @@ const int p = 998244353, g = 3;
 
 poly inversePolynomial(const poly & A){
 	poly R(1, powerMod<p>(A[0], p - 2));
-	//R(x) = 2R(x)-A(x)R(x)^2
 	while(R.size() < A.size()){
 		size_t c = 2 * R.size();
 		R.resize(c);
@@ -97,7 +96,7 @@ poly derivative(poly A){
 	return A;
 }
 
-poly integral(poly A){
+poly integrate(poly A){
 	for(int i = 0; i < A.size(); ++i)
 		A[i] = (lli)A[i] * (powerMod<p>(i+1, p-2)) % p;
 	A.insert(A.begin(), 0);
@@ -109,14 +108,13 @@ poly logarithm(poly A){
 	int n = A.size();
 	A = convolution<p, g>(derivative(A), inversePolynomial(A));
 	A.resize(n);
-	A = integral(A);
+	A = integrate(A);
 	A.resize(n);
 	return A;
 }
 
 poly exponential(const poly & A){
 	assert(A[0] == 0);
-	//E(x) = E(x)(1-ln(E(x))+A(x))
 	poly E(1, 1);
 	while(E.size() < A.size()){
 		size_t c = 2*E.size();
@@ -134,17 +132,48 @@ poly exponential(const poly & A){
 	return E;
 }
 
+poly power(const poly& a, lli n){
+	int t = -1;
+	for(int i = 0; i < a.size(); ++i){
+		if(a[i] != 0){
+			t = i;
+			break;
+		}
+	}
+	if(t == -1){
+		poly c = a;
+		if(n == 0) c[0] = 1;
+		return c;
+	}
+	lli lead = powerMod<p>(a[t], n);
+	lli inv_lead = powerMod<p>(a[t], p-2);
+	poly b, c(a.size());
+	for(int i = t; i < a.size(); ++i){
+		b.push_back(inv_lead * a[i] % p);
+	}
+	b = logarithm(b);
+	for(int& bi : b){
+		bi = (n % p) * bi % p;
+	}
+	b = exponential(b);
+	__int128_t nt = (__int128_t)n*t;
+	for(int i = 0; i + nt < a.size(); ++i){
+		c[i + nt] = lead * b[i] % p;
+	}
+	return c;
+}
+
 int main(){
 	ios_base::sync_with_stdio(0), cin.tie(0), cout.tie(0);
-	int n;
-	cin >> n;
+	int n; lli m;
+	cin >> n >> m;
 	poly a(n);
 	for(int& ai : a){
 		cin >> ai;
 	}
-	poly expo = exponential(a);
-	for(int ai : expo){
-		cout << ai << " ";
+	poly b = power(a, m);
+	for(int bi : b){
+		cout << bi << " ";
 	}
 	cout << "\n";
 	return 0;
