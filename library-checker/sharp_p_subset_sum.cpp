@@ -91,7 +91,7 @@ vector<int> derivative(vector<int> A){
 	return A;
 }
 
-vector<int> integral(vector<int> A){
+vector<int> integrate(vector<int> A){
 	for(int i = 0; i < A.size(); ++i)
 		A[i] = (lli)A[i] * (powerMod(i+1, p-2, p)) % p;
 	A.insert(A.begin(), 0);
@@ -103,7 +103,7 @@ vector<int> logarithm(vector<int> A){
 	int n = A.size();
 	A = convolution<p, g>(derivative(A), inversePolynomial(A));
 	A.resize(n);
-	A = integral(A);
+	A = integrate(A);
 	A.resize(n);
 	return A;
 }

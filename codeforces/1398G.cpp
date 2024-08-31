@@ -66,85 +66,32 @@ poly convolution(poly a, poly b){
 }
 
 const int p = 998244353, g = 3;
-
-poly inversePolynomial(const poly & A){
-	poly R(1, powerMod<p>(A[0], p - 2));
-	//R(x) = 2R(x)-A(x)R(x)^2
-	while(R.size() < A.size()){
-		size_t c = 2 * R.size();
-		R.resize(c);
-		poly R2 = R;
-		poly a(min(c, A.size()));
-		for(int i = 0; i < a.size(); ++i)
-			a[i] = A[i];
-		R2 = convolution<p, g>(R2, R2);
-		R2.resize(c);
-		R2 = convolution<p, g>(R2, a);
-		for(int i = 0; i < c; ++i){
-			R[i] = R[i] + R[i] - R2[i];
-			if(R[i] < 0) R[i] += p;
-			if(R[i] >= p) R[i] -= p;
-		}
-	}
-	R.resize(A.size());
-	return R;
-}
-
-poly derivative(poly A){
-	for(int i = 0; i < A.size(); ++i)
-		A[i] = (lli)A[i] * i % p;
-	if(!A.empty()) A.erase(A.begin());
-	return A;
-}
-
-poly integrate(poly A){
-	for(int i = 0; i < A.size(); ++i)
-		A[i] = (lli)A[i] * (powerMod<p>(i+1, p-2)) % p;
-	A.insert(A.begin(), 0);
-	return A;
-}
-
-poly logarithm(poly A){
-	assert(A[0] == 1);
-	int n = A.size();
-	A = convolution<p, g>(derivative(A), inversePolynomial(A));
-	A.resize(n);
-	A = integrate(A);
-	A.resize(n);
-	return A;
-}
-
-poly exponential(const poly & A){
-	assert(A[0] == 0);
-	//E(x) = E(x)(1-ln(E(x))+A(x))
-	poly E(1, 1);
-	while(E.size() < A.size()){
-		size_t c = 2*E.size();
-		E.resize(c);
-		poly S = logarithm(E);
-		for(int i = 0; i < c && i < A.size(); ++i){
-			S[i] = A[i] - S[i];
-			if(S[i] < 0) S[i] += p;
-		}
-		S[0] = 1;
-		E = convolution<p, g>(E, S);
-		E.resize(c);
-	}
-	E.resize(A.size());
-	return E;
-}
+const int M = 1e6;
 
 int main(){
 	ios_base::sync_with_stdio(0), cin.tie(0), cout.tie(0);
-	int n;
-	cin >> n;
-	poly a(n);
-	for(int& ai : a){
+	int n, x, y, q;
+	cin >> n >> x >> y;
+	poly A(x+1), B(x+1);
+	for(int i = 0; i <= n; ++i){
+		int ai;
 		cin >> ai;
+		A[ai]++;
+		B[x-ai]++;
 	}
-	poly expo = exponential(a);
-	for(int ai : expo){
-		cout << ai << " ";
+	poly C = convolution<p, g>(A, B);
+	vector<int> answers(M+1, -1);
+	for(int d = 2*y+2; d <= M && d/2-y+x < C.size(); d += 2){
+		if(C[d/2-y+x] == 0) continue;
+		for(int i = d; i <= M; i += d){
+			answers[i] = d;
+		}
+	}
+	cin >> q;
+	while(q--){
+		int m;
+		cin >> m;
+		cout << answers[m] << " ";
 	}
 	cout << "\n";
 	return 0;

@@ -67,65 +67,45 @@ poly convolution(poly a, poly b){
 
 const int p = 998244353, g = 3;
 
-poly inversePolynomial(const poly & A){
-	poly R(1, powerMod<p>(A[0], p - 2));
-	//R(x) = 2R(x)-A(x)R(x)^2
-	while(R.size() < A.size()){
-		size_t c = 2 * R.size();
-		R.resize(c);
-		poly R2 = R;
-		poly a(min(c, A.size()));
-		for(int i = 0; i < a.size(); ++i)
-			a[i] = A[i];
-		R2 = convolution<p, g>(R2, R2);
-		R2.resize(c);
-		R2 = convolution<p, g>(R2, a);
-		for(int i = 0; i < c; ++i){
-			R[i] = R[i] + R[i] - R2[i];
-			if(R[i] < 0) R[i] += p;
-			if(R[i] >= p) R[i] -= p;
-		}
-	}
-	R.resize(A.size());
-	return R;
-}
-
-poly derivative(poly A){
-	for(int i = 0; i < A.size(); ++i)
-		A[i] = (lli)A[i] * i % p;
-	if(!A.empty()) A.erase(A.begin());
-	return A;
-}
-
-poly integrate(poly A){
-	for(int i = 0; i < A.size(); ++i)
-		A[i] = (lli)A[i] * (powerMod<p>(i+1, p-2)) % p;
-	A.insert(A.begin(), 0);
-	return A;
-}
-
-poly logarithm(poly A){
-	assert(A[0] == 1);
-	int n = A.size();
-	A = convolution<p, g>(derivative(A), inversePolynomial(A));
-	A.resize(n);
-	A = integrate(A);
-	A.resize(n);
-	return A;
-}
-
 int main(){
-	ios_base::sync_with_stdio(0), cin.tie(0), cout.tie(0);
-	int n;
-	cin >> n;
-	poly a(n);
-	for(int& ai : a){
-		cin >> ai;
-	}
-	poly lg = logarithm(a);
-	for(int ai : lg){
-		cout << ai << " ";
-	}
-	cout << "\n";
-	return 0;
+    ios_base::sync_with_stdio(0), cin.tie(0), cout.tie(0);
+    int n, k;
+    cin >> n >> k;
+    vector<int> a(n), b(n);
+    for(int & ai : a) cin >> ai;
+    int Q;
+    cin >> Q;
+    while(Q--){
+        int t, q, i, l, r, d;
+        cin >> t >> q;
+        vector<int> b = a;
+        if(t == 1){
+            cin >> i >> d;
+            --i;
+            b[i] = d;
+        }else{
+            cin >> l >> r >> d;
+            --l, --r;
+            for(int j = l; j <= r; ++j){
+                b[j] += d;
+                if(b[j] >= p) b[j] -= p;
+            }
+        }
+        for(int j = 0; j < n; ++j){
+            b[j] = q - b[j];
+            if(b[j] < 0) b[j] += p;
+        }
+        function<poly(int, int)> f = [&](int l, int r){
+            if(l == r){
+                poly ans = {1, b[l]};
+                return ans;
+            }else{
+                int m = (l + r) / 2;
+                return convolution<p, g>(f(l, m), f(m+1, r));
+            }
+        };
+        poly c = f(0, n-1);
+        cout << c[k] << "\n";
+    }
+    return 0;
 }
